@@ -1,15 +1,28 @@
 version: '3.8'
 
 services:
+  # Interfaz web de Whisper
+  whisper-webui:
+    image: onerahmet/openai-whisper-asr-webservice:latest
+    container_name: whisper-webui
+    ports:
+      - "9000:9000"
+    volumes:
+      - whisper-models:/root/.cache/whisper
+      - ./input:/data/input
+      - ./output:/data/output
+    environment:
+      - ASR_MODEL=base
+      - ASR_ENGINE=openai_whisper
+    restart: unless-stopped
+
+  # CLI de Whisper (opcional)
   whisper:
     build:
       context: .
       dockerfile: Dockerfile
     image: whisper:latest
     container_name: whisper-app
-    ports:
-      - "8000:80"
-      - "8001:443"
     
     # Volúmenes permanentes
     volumes:
