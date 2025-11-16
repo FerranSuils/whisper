@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  whisper:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: whisper:latest
+    container_name: whisper-app
+    
+    # Volúmenes permanentes
+    volumes:
+      # Volumen para cachear los modelos descargados de Whisper
+      - whisper-models:/root/.cache/whisper
+      # Volumen para archivos de entrada/salida
+      - ./data:/data
+      # Opcional: montar directorio local para procesar archivos
+      - ./input:/data/input
+      - ./output:/data/output
+    
+    # Mantener el contenedor en ejecución
+    stdin_open: true
+    tty: true
+    
+    # Variables de entorno opcionales
+    environment:
+      - PYTHONUNBUFFERED=1
+    
+    # Comando por defecto (puede ser sobrescrito)
+    command: tail -f /dev/null
+    
+    # Reinicio automático
+    restart: unless-stopped
+
+# Volúmenes nombrados para persistencia
+volumes:
+  whisper-models:
+    driver: local
+    name: whisper-models-cache
