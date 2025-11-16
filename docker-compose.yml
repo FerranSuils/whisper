@@ -7,6 +7,9 @@ services:
       dockerfile: Dockerfile
     image: whisper:latest
     container_name: whisper-app
+    ports:
+      - "8000:80"
+      - "8001:443"
     
     # Volúmenes permanentes
     volumes:
