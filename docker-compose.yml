@@ -14,6 +14,8 @@ services:
     environment:
       - ASR_MODEL=base
       - ASR_ENGINE=openai_whisper
+      # Aumentar límite de tamaño de archivo (en bytes)
+      - MAX_CONTENT_LENGTH=2147483648
     restart: unless-stopped
 
   # CLI de Whisper (opcional)
